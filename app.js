@@ -4,13 +4,11 @@ const path = require("path");
 
 const app = express();
 
-app.get("/", (req,res) => {
-  res.end("Hello World");
-});
-
 // 静的コンテンツのルーティング
 app.use("/public", express.static(path.join(__dirname, "/public")));
 
+// 動的コンテンツのルーティング
+app.use("/", require("./routes/index.js"));
 
 app.listen(PORT, () => {
   console.log("open server");
