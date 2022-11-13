@@ -17,13 +17,15 @@ app.use("/public", express.static(path.join(__dirname, "/public")));
 // Dynamic resource rooting.
 app.use("/", require("./routes/index.js"));
 
-// --- 追加 -------------
+// 意図的にエラーを出す。エラーを出した後にapplicationloggerミドルウェアを実行しているの、コンソールに出力できる。
+// ミドルウェアの実行後にエラーを投げても、何も起きないので注意
 // app.get("/test", (req, res, next) => {
 //   throw new Error("Something happened!"); // エラーを投げる
 // });
 
 // Set application log.
 app.use(applicationlogger());
+
 
 // Execute web application.
 app.listen(PORT, () => {
