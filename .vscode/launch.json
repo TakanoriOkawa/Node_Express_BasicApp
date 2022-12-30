@@ -13,6 +13,7 @@
             ],
             "program": "${workspaceFolder}/app.js",
             "envFile": "${workspaceFolder}/.env", 
+            "console": "integratedTerminal"
         }
     ]
 }
