@@ -37,7 +37,7 @@ app.use("/test", async (req,res,next) => {
   try {
     // connectメソッドは、そのままだと同期処理なので、非同期処理にする promisify
     await MySQLClient.connect(); //コールバック地獄？
-    data = await MySQLClient.query(await sql("SELECT_SHOP_BASIC_BY_ID")); // ファイル名を取得
+    data = await MySQLClient.query(await sql("SELECT_SHOP_BASIC_BY_ID"), [1]); // ファイル名を取得
     console.log(data);
 
   }catch(err) {
