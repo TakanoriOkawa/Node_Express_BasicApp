@@ -5,7 +5,6 @@ const applicationlogger = require("./lib/log/applicationlogger.js");
 const accesslogger = require("./lib/log/accesslogger.js");
 const express = require("express");
 const favicon = require("serve-favicon");
-const { config } = require("process");
 const app = express();
 
 // Express settings
@@ -32,38 +31,19 @@ app.use("/", require("./routes/index.js"));
 
 // 動的リソース get以外も使いたい場合は、useを使う
 app.use("/test", async (req,res,next) => {
-  const { promisify } =  require("util"); // 非同期化するメソッド
-  const config = require("./config/mysql.config.js");
-  const { sql } = require("@garafu/mysql-fileloader")({root: path.join(__dirname, "./lib/database/sql")});
-  const mysql = require("mysql");
-
-  const con = mysql.createConnection({
-    host: config.HOST,
-    port: config.PORT,
-    user: config.USERNAME,
-    password: config.PASSWORD,
-    database: config.DATABASE,
-  });
-
+  const { MySQLClient, sql } = require("./lib/database/client.js");
   let data;
-
-  const client = {
-    connect: promisify(con.connect).bind(con),
-    query: promisify(con.query).bind(con),
-    end: promisify(con.end).bind(con),
-  };
 
   try {
     // connectメソッドは、そのままだと同期処理なので、非同期処理にする promisify
-    await client.connect(); //コールバック地獄？
-    data = await client.query(await sql("SELECT_SHOP_BASIC_BY_ID")); // ファイル名を取得
+    await MySQLClient.connect(); //コールバック地獄？
+    data = await MySQLClient.query(await sql("SELECT_SHOP_BASIC_BY_ID")); // ファイル名を取得
     console.log(data);
 
   }catch(err) {
-    // next(err);
-    throw new Error("Something problem!");
+    next(err);
   }finally {
-    await client.end();
+    await MySQLClient.end();
   }
 
   res.send("200");
