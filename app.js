@@ -11,6 +11,14 @@ const app = express();
 app.set("view engine", "ejs");
 app.disable("x-powered-by");
 
+// Expose global method to view engine
+app.use((req,res,next) => {
+  // ここで渡しているのがレスポンスのオブジェクトに追加して渡している
+  res.locals.moment = require("moment");
+  res.locals.padding = require("./lib/math.js").padding;
+  next();
+});
+
 // Static resource rooting.
 app.use(favicon(path.join(__dirname, "/public/favicon.ico")));
 app.use("/public", express.static(path.join(__dirname, "/public")));
