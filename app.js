@@ -15,8 +15,6 @@ app.disable("x-powered-by");
 app.use(favicon(path.join(__dirname, "/public/favicon.ico")));
 app.use("/public", express.static(path.join(__dirname, "/public")));
 
-console.log(__dirname, "🌟");
-
 // Access Logger
 app.use(accesslogger());
 
@@ -33,12 +31,11 @@ app.use("/", require("./routes/index.js"));
 app.use("/test", async (req,res,next) => {
   const { MySQLClient, sql } = require("./lib/database/client.js");
   let data;
-
   try {
-    // connectメソッドは、そのままだと同期処理なので、非同期処理にする promisify
     data = await MySQLClient.executeQuery(await sql("SELECT_SHOP_BASIC_BY_ID"), [1]);
-    console.log(data);
+    console.log(data, "結果表示");
   }catch(err) {
+    console.log(err, "エラー表示");
     next(err);
   }
   res.send("200");
