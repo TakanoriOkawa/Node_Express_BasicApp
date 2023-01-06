@@ -4,7 +4,6 @@ const { MySQLClient, sql } = require("../lib/database/client.js");
 // SQLでの取得処理があるのでasyncをつける
 router.get("/:id", async (req,res,next) => {
   const id = req.params.id;
-
   // 後々口コミ情報（_t_review？）他のテーブルからの取得処理と結合するので、Promise.allを使う。
   Promise.all([
     MySQLClient.executeQuery(
