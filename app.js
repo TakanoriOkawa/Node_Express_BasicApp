@@ -28,26 +28,13 @@ app.use(accesslogger());
 
 // Dynamic resource rooting.
 app.use("/", require("./routes/index.js"));
+app.use("/shops", require("./routes/shops.js"));
 
 // ここでは意図的にエラーを出す。エラーを出した後にapplication_loggerミドルウェアを実行している。コンソールに出力できる。
 // ミドルウェアの実行後にエラーを投げても、何も起きないので注意
 // app.get("/test", (req, res, next) => {
 //   throw new Error("Something happened!"); // エラーを投げる
 // });
-
-// 動的リソース get以外も使いたい場合は、useを使う
-app.use("/test", async (req,res,next) => {
-  const { MySQLClient, sql } = require("./lib/database/client.js");
-  let data;
-  try {
-    data = await MySQLClient.executeQuery(await sql("SELECT_SHOP_BASIC_BY_ID"), [1]);
-    console.log(data, "結果表示");
-  }catch(err) {
-    console.log(err, "エラー表示");
-    next(err);
-  }
-  res.send("200");
-});
 
 // Set application log.
 // このミドルウェアを実行する前に、既にエラーが投げられている場合、エラーを出力する
