@@ -4,6 +4,10 @@ SELECT
   shop_category.post_code,
   shop_category.address,
   shop_category.tel,
+  shop_category.holiday,
+  shop_category.seats,
+  shop_category.price_range,
+  shop_category.score,
   GROUP_CONCAT(m_category.name separator ', ') as categories
 FROM
 (
