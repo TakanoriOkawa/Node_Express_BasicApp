@@ -1,6 +1,19 @@
 SELECT
-  *
+  shop_category.id,
+  shop_category.name,
+  shop_category.post_code,
+  shop_category.address,
+  shop_category.tel,
+  GROUP_CONCAT(m_category.name separator ', ') as categories
 FROM
-  t_shop
-WHERE
-  id = ?
+(
+  SELECT
+   *
+   FROM
+   (
+    SELECT * FROM t_shop WHERE id = ?
+   ) as shop -- as って何？ 名前をつけている？
+   LEFT JOIN t_shop_category ON shop.id = t_shop_category.shop_id
+) as shop_category
+LEFT JOIN m_category ON shop_category.category_id = m_category.id
+GROUP BY shop_category.id
