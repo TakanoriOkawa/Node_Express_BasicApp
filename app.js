@@ -6,10 +6,15 @@ const accesslogger = require("./lib/log/accesslogger.js");
 const express = require("express");
 const favicon = require("serve-favicon");
 const app = express();
+const cors = require("cors");
 
 // Express settings
 app.set("view engine", "ejs");
 app.disable("x-powered-by");
+
+app.use(cors({
+  origin: `http://localhost:${process.env.CLIENT_PORT}`,
+}));
 
 // Expose global method to view engine
 app.use((req,res,next) => {
@@ -29,6 +34,8 @@ app.use(accesslogger());
 // Dynamic resource rooting.
 app.use("/", require("./routes/index.js"));
 app.use("/shops", require("./routes/shops.js"));
+
+app.use("/api_shops", require("./routes/api/shops.js"));
 
 // ここでは意図的にエラーを出す。エラーを出した後にapplication_loggerミドルウェアを実行している。コンソールに出力できる。
 // ミドルウェアの実行後にエラーを投げても、何も起きないので注意
