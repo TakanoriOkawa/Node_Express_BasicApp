@@ -37,12 +37,6 @@ app.use("/shops", require("./routes/shops.js"));
 
 app.use("/api_shops", require("./routes/api/shops.js"));
 
-// ここでは意図的にエラーを出す。エラーを出した後にapplication_loggerミドルウェアを実行している。コンソールに出力できる。
-// ミドルウェアの実行後にエラーを投げても、何も起きないので注意
-// app.get("/test", (req, res, next) => {
-//   throw new Error("Something happened!"); // エラーを投げる
-// });
-
 // Set application log.
 // このミドルウェアを実行する前に、既にエラーが投げられている場合、エラーを出力する
 app.use(applicationlogger());
