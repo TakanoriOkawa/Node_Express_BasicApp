@@ -8,6 +8,8 @@ SELECT
   shop_category.seats,
   shop_category.price_range,
   shop_category.score,
+  shop_category.geolocation_latitude,
+  shop_category.geolocation_longitude,
   GROUP_CONCAT(m_category.name separator ', ') as categories
 FROM
 (
